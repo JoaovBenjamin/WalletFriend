@@ -4,6 +4,8 @@ import com.joao.WalletFriend.model.Usuario.Usuario;
 import com.joao.WalletFriend.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.server.ResponseStatusException;
@@ -16,10 +18,6 @@ public class UsuarioServiceImpl implements IUsuarioService {
     @Autowired
     UsuarioRepository repository;
 
-    @Override
-    public Usuario novoUsuario(@RequestBody Usuario usuario) {
-        return repository.save(usuario);
-    }
 
     @Override
     public void deletarUsuario(Long id) {

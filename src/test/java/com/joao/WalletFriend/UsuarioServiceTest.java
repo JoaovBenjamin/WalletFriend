@@ -2,6 +2,7 @@ package com.joao.WalletFriend;
 
 import com.joao.WalletFriend.model.Usuario.Usuario;
 import com.joao.WalletFriend.repository.UsuarioRepository;
+import com.joao.WalletFriend.security.AuthService;
 import com.joao.WalletFriend.service.Usuario.UsuarioServiceImpl;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -21,41 +22,20 @@ public class UsuarioServiceTest {
     private UsuarioServiceImpl service;
 
     @Mock
-    private UsuarioRepository repository;
-
-    @Test
-    @DisplayName("Teste de adicionar um novo usuario")
-    public void casoAdicioneNovoUsuario(){
-
-        //Arrange
-        Usuario usuario = new Usuario();
-        usuario.setEmail("joaovvbenjamin@gmail");
-        usuario.setNome("João");
-
-        Usuario result = new Usuario();
-        result.setId(1L);
-        result.setEmail("joaovvbenjamin@gmail");
-        result.setNome("João");
-
-        //Act
-        Mockito.when(service.novoUsuario(usuario)).thenReturn(result);
-
-        //Asserts
-        assertNotNull(result);
-        assertEquals("João", result.getNome());
-        assertEquals("joaovvbenjamin@gmail", result.getEmail());
-    }
+    UsuarioRepository repository;
 
     @Test
     @DisplayName("Teste de buscar por id")
     public void buscarUsuarioPorId(){
 
         //Arrange
+        Long usuarioId = 1L;
 
         Usuario result = new Usuario();
-        result.setId(1L);
-        result.setEmail("joaovvbenjamin@gmail");
+        result.setEmail("joaovvbenjamin@gmail.com");
         result.setNome("João");
+        result.setSenha("123456789");
+        result.setId(usuarioId);
 
         //Act
         Mockito.when(service.buscarPorId(1L)).thenReturn(Optional.of(result));
@@ -74,10 +54,12 @@ public class UsuarioServiceTest {
         Usuario usuarioExist = new Usuario();
         usuarioExist.setId(usuarioId);
         usuarioExist.setNome("João");
+        usuarioExist.setSenha("12345678978");
         usuarioExist.setEmail("email");
 
         Usuario usuarioNovo = new Usuario();
         usuarioNovo.setNome("João");
+        usuarioNovo.setSenha("12345378587837");
         usuarioNovo.setEmail("joaovvbenjamin@gmail.com");
 
         Mockito.when(service.buscarPorId(usuarioId)).thenReturn(Optional.of(usuarioExist));
@@ -102,6 +84,7 @@ public class UsuarioServiceTest {
         Usuario usuario = new Usuario();
         usuario.setEmail("joaovvbenjamin@gmail.com");
         usuario.setNome("João");
+        usuario.setSenha("123333553");
         usuario.setId(usuarioId);
 
         Mockito.when(repository.findById(usuarioId))

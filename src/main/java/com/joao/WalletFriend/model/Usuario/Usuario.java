@@ -30,6 +30,11 @@ public class Usuario {
     @Column(name = "email_usuario")
     private String email;
 
+    @NotBlank
+    @Column(name = "senha_usuario")
+    @Size(max = 100)
+    private String senha;
+
 
     public Long getId() {
         return id;
@@ -53,5 +58,12 @@ public class Usuario {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+    public String getSenha() {
+        return senha;
+    }
+
+    public void setSenha(String senha) {
+        this.senha = senha;
     }
 }

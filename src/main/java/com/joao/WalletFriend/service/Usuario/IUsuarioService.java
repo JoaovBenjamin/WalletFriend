@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Optional;
 
 public interface IUsuarioService {
-    public Usuario novoUsuario(Usuario usuario);
     public List<Usuario> verUsuarios();
     public void deletarUsuario(Long id);
     public Usuario editarUsuario(Usuario usuario, Long id);

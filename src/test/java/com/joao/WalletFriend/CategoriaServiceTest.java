@@ -34,6 +34,7 @@ public class CategoriaServiceTest {
         Usuario usuario = new Usuario();
         usuario.setId(1L);
         usuario.setEmail("joaovvbenjamin@gmail");
+        usuario.setSenha("1234566778");
         usuario.setNome("João");
 
         Categoria categoria = new Categoria();
@@ -67,6 +68,7 @@ public class CategoriaServiceTest {
 
         Usuario usuario = new Usuario();
         usuario.setId(1L);
+        usuario.setSenha("12345678");
         usuario.setEmail("joaovvbenjamin@gmail");
         usuario.setNome("João");
 
@@ -90,6 +92,7 @@ public class CategoriaServiceTest {
         Usuario usuario = new Usuario();
         usuario.setId(1L);
         usuario.setEmail("joaovvbenjamin@gmail");
+        usuario.setSenha("123456677");
         usuario.setNome("João");
 
         Categoria categoria = new Categoria();
@@ -112,6 +115,7 @@ public class CategoriaServiceTest {
 
         Usuario usuario = new Usuario();
         usuario.setId(1L);
+        usuario.setSenha("12345678");
         usuario.setEmail("joaovvbenjamin@gmail");
         usuario.setNome("João");
 
@@ -147,6 +151,7 @@ public class CategoriaServiceTest {
         Usuario usuario = new Usuario();
         usuario.setId(1L);
         usuario.setEmail("joaovvbenjamin@gmail");
+        usuario.setSenha("12345678");
         usuario.setNome("João");
 
         Categoria categoria = new Categoria();

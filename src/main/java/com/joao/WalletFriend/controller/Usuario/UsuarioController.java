@@ -20,11 +20,6 @@ public class UsuarioController {
         return service.verUsuarios();
     }
 
-    @PostMapping("usuario")
-    public ResponseEntity<Usuario> newUser(@RequestBody Usuario usuario){
-        service.novoUsuario(usuario);
-        return ResponseEntity.status(HttpStatusCode.valueOf(201)).body(usuario);
-    }
 
     @PutMapping("usuario/{id}")
     public ResponseEntity<Usuario> editarUsuario(@PathVariable Long id, @RequestBody Usuario usuario){
