@@ -35,6 +35,10 @@ public class Usuario {
     @Size(max = 100)
     private String senha;
 
+    @NotBlank
+    @Column(name = "avatar_usuario")
+    private String avatar;
+
 
     public Long getId() {
         return id;
@@ -65,5 +69,13 @@ public class Usuario {
 
     public void setSenha(String senha) {
         this.senha = senha;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
     }
 }

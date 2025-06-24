@@ -23,6 +23,7 @@ public class AuthService {
     public Usuario novoUsuario(@RequestBody Usuario usuario) {
         String novaSenha = passwordEncoder.encode(usuario.getSenha());
         usuario.setSenha(novaSenha);
+        usuario.setAvatar("https://avatar.iran.liara.run/username?username=" + usuario.getNome());
         return repository.save(usuario);
     }
 

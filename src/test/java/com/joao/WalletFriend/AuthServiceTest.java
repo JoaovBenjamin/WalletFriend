@@ -23,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 @SpringBootTest
 public class AuthServiceTest {
     @InjectMocks
-    private AuthService serviceauth;
+    private AuthService serviceAuth;
 
     @Mock
     private UsuarioRepository repository;
@@ -52,7 +52,7 @@ public class AuthServiceTest {
         result.setNome("João");
 
         //Act
-        Mockito.when(serviceauth.novoUsuario(usuario)).thenReturn(result);
+        Mockito.when(serviceAuth.novoUsuario(usuario)).thenReturn(result);
 
         //Asserts
         assertNotNull(result);
@@ -90,7 +90,7 @@ public class AuthServiceTest {
         Mockito.when(jwtTokenUtil.createToken(email)).thenReturn(token);
 
         //Envio minha requisição
-        JwtToken tokenLogin = serviceauth.login(credentials);
+        JwtToken tokenLogin = serviceAuth.login(credentials);
 
         //Verifico os dados
         assertNotNull(tokenLogin);
