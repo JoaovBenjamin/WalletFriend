@@ -20,6 +20,12 @@ public class SecurityConfig{
                 auth
                         .requestMatchers(POST,"usuario/register").permitAll()
                         .requestMatchers(POST,"usuario/login").permitAll()
+                        .requestMatchers(  "/swagger-ui/**",
+                                "/v3/api-docs/**",
+                                "/swagger-resources/**",
+                                "/swagger-ui.html",
+                                "/webjars/**").permitAll()
+                        .requestMatchers("docs").permitAll()
                         .anyRequest().authenticated()
 
 
