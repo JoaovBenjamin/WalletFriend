@@ -2,7 +2,7 @@ FROM eclipse-temurin:21-jdk-jammy
 
 WORKDIR /app
 
-COPY target/WalletFriend-0.0.1-SNAPSHOT.jar app.jar
+COPY target/WalletFriend-*.jar app.jar
 
 EXPOSE 8080
 
