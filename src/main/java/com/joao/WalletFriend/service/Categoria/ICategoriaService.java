@@ -1,6 +1,8 @@
 package com.joao.WalletFriend.service.Categoria;
 
 import com.joao.WalletFriend.model.Categoria.Categoria;
+import com.joao.WalletFriend.model.Usuario.Usuario;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.List;
 import java.util.Optional;

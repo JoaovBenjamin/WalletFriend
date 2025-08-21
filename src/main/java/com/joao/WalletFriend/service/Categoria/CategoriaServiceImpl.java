@@ -1,9 +1,11 @@
 package com.joao.WalletFriend.service.Categoria;
 
 import com.joao.WalletFriend.model.Categoria.Categoria;
+import com.joao.WalletFriend.model.Usuario.Usuario;
 import com.joao.WalletFriend.repository.CategoriaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -54,4 +56,5 @@ public class CategoriaServiceImpl implements ICategoriaService{
                 .findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Não existe usuario com o id informado"));
     }
+
 }

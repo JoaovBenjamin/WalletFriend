@@ -4,6 +4,8 @@ import com.joao.WalletFriend.model.Usuario.Usuario;
 import com.joao.WalletFriend.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -46,5 +48,13 @@ public class UsuarioServiceImpl implements IUsuarioService {
         repository
                 .findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Não existe usuario com o id informado"));
+    }
+
+    @Override
+    public Usuario buscarUsuarioPelaAuth(UserDetails userDetails) {
+        String email = userDetails.getUsername();
+        return repository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("Email não encotrado" + email));
+
     }
 }

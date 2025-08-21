@@ -49,9 +49,8 @@ public class CategoriaServiceTest {
         resultC.setUser(usuario);
 
 
-        Mockito.when(usuarioRepository.findById(1l)).thenReturn(Optional.of(usuario));
+        Mockito.when(usuarioRepository.findById(1L)).thenReturn(Optional.of(usuario));
         Mockito.when(repository.save(Mockito.any(Categoria.class))).thenReturn(resultC);
-
         Categoria resultado = service.criarCategoria(resultC);
 
         assertNotNull(resultado);

@@ -1,31 +1,43 @@
 package com.joao.WalletFriend.controller.Categoria;
 
 import com.joao.WalletFriend.model.Categoria.Categoria;
+import com.joao.WalletFriend.model.Usuario.Usuario;
+import com.joao.WalletFriend.repository.UsuarioRepository;
 import com.joao.WalletFriend.service.Categoria.CategoriaServiceImpl;
+import com.joao.WalletFriend.service.Usuario.UsuarioServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
 
 @RestController
-@Tag(name = "Categorias")
+@SecurityRequirement(name = "bearerAuth")
+@Slf4j
+@RequestMapping("/categoria")
 public class CategoriaController {
 
     @Autowired
     CategoriaServiceImpl service;
 
+    @Autowired
+    UsuarioServiceImpl usuarioService;
 
 
-    @GetMapping("categoria")
+
+    @GetMapping()
     @Operation(
             summary = "Retornar todas as categorias salvas",
             description = "Retorna um Array de categorias cadastradas pelo usuario atual"
@@ -40,9 +52,7 @@ public class CategoriaController {
         return service.listarCategorias();
     }
 
-    @Parameters(
-            @Parameter(description = "Jwt Token")
-    )
+
     @Operation(
             summary = "Retornar a categoria salva referente ao seu id",
             description = "Retorna um Array de categoria cadastrada pelo usuario atual"
@@ -53,7 +63,7 @@ public class CategoriaController {
             @ApiResponse(responseCode = "403", description = "Usuario não autenticado")
     }
     )
-    @GetMapping("categoria/{id}")
+    @GetMapping("/id/{id}")
     public Optional<Categoria> listarCategoriaPorId(@PathVariable Long id){
         return service.buscarPorId(id);
     }
@@ -69,7 +79,7 @@ public class CategoriaController {
 
     }
     )
-    @GetMapping("categoria/{nome}")
+    @GetMapping("/{nome}")
     public Optional<Categoria> buscarCategoriaPorNome(@RequestParam String nome){
         return service.buscarPorNome(nome);
     }
@@ -85,13 +95,15 @@ public class CategoriaController {
             @ApiResponse(responseCode = "403", description = "Usuario não autenticado")
     }
     )
-    @Parameters(
-            @Parameter(description = "Jwt Token")
-    )
-    @PostMapping("categoria")
-    public ResponseEntity<Categoria> criarCategoria(@RequestBody Categoria categoria){
-        service.criarCategoria(categoria);
-        return ResponseEntity.status(HttpStatus.CREATED).body(categoria);
+
+    @PostMapping()
+    public ResponseEntity<Categoria> criarCategoria(@RequestBody Categoria categoria,
+                                                    @AuthenticationPrincipal UserDetails userDetails) {
+        Usuario usuario = usuarioService.buscarUsuarioPelaAuth(userDetails);
+        categoria.setUser(usuario);
+        Categoria categoriaSalva = service.criarCategoria(categoria);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(categoriaSalva);
     }
 
     @Operation(
@@ -104,9 +116,26 @@ public class CategoriaController {
             @ApiResponse(responseCode = "400", description = "Falha na requisição")
     }
     )
-    @PutMapping("categoria")
-    public Categoria editarCategoria(@PathVariable Long id, @RequestBody Categoria categoria){
-        return service.alterarCategoira(id,categoria);
+    @PutMapping("/{id}")
+    public ResponseEntity<Categoria> editarCategoria(@PathVariable Long id,
+                                                     @RequestBody Categoria categoria,
+                                                     @AuthenticationPrincipal UserDetails userDetails) {
+        try {
+
+            Usuario usuario = usuarioService.buscarUsuarioPelaAuth(userDetails);
+            Optional<Categoria> categoriaExistente = service.buscarPorId(id);
+
+            if (categoriaExistente.isEmpty() || !categoriaExistente.get().getUser().getId().equals(usuario.getId())) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+            }
+
+            categoria.setUser(usuario);
+            categoria.setId(id);
+            Categoria categoriaAtualizada = service.alterarCategoira(id, categoria);
+            return ResponseEntity.ok(categoriaAtualizada);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
     }
 
 
@@ -120,9 +149,22 @@ public class CategoriaController {
             @ApiResponse(responseCode = "400", description = "Falha na requisição")
     }
     )
-    @DeleteMapping("categoria/{id}")
-    public ResponseEntity<Void> deletarUsuario(@PathVariable Long id){
-        service.deletarCategoria(id);
-        return ResponseEntity.noContent().build();
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletarCategoria(@PathVariable Long id,
+                                                 @AuthenticationPrincipal UserDetails userDetails) {
+        try {
+            Usuario usuario = usuarioService.buscarUsuarioPelaAuth(userDetails);
+
+            Optional<Categoria> categoria = service.buscarPorId(id);
+            if (categoria.isEmpty() || !categoria.get().getUser().getId().equals(usuario.getId())) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+            }
+
+            service.deletarCategoria(id);
+            return ResponseEntity.noContent().build();
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
     }
+
 }

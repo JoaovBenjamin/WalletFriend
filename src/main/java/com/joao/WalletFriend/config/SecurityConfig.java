@@ -1,5 +1,6 @@
-package com.joao.WalletFriend.security;
+package com.joao.WalletFriend.config;
 
+import com.joao.WalletFriend.security.MyFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -14,18 +15,18 @@ import static org.springframework.http.HttpMethod.*;
 public class SecurityConfig{
 
     @Bean
-    public SecurityFilterChain config(HttpSecurity http,MyFilter myFilter) throws Exception{
+    public SecurityFilterChain config(HttpSecurity http, MyFilter myFilter) throws Exception{
         http.csrf(csrf -> csrf.disable());
         http.authorizeHttpRequests(auth ->
                 auth
-                        .requestMatchers(POST,"usuario/register").permitAll()
-                        .requestMatchers(POST,"usuario/login").permitAll()
+                        .requestMatchers(POST,"/usuario/register").permitAll()
+                        .requestMatchers(POST,"/usuario/login").permitAll()
                         .requestMatchers(  "/swagger-ui/**",
                                 "/v3/api-docs/**",
                                 "/swagger-resources/**",
                                 "/swagger-ui.html",
                                 "/webjars/**").permitAll()
-                        .requestMatchers("docs").permitAll()
+                        .requestMatchers("/docs").permitAll()
                         .anyRequest().authenticated()
 
 
